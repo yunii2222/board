@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 리스트 페이지</title>
+    <style>
+        /* 전체적인 스타일 설정 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* 화면 전체 높이 */
+        }
+
+        /* 레이아웃 컨테이너 */
+        .layout {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        /* 테이블 스타일 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        th:first-child, td:first-child {
+            text-align: center;
+        }
+
+        /* 버튼 스타일 */
+        .add-button {
+            display: block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .add-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* 검색창 스타일 */
+        .search-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .search-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+        .search-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* 페이지네이션 스타일 */
+        .pagination {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .pagination a, .pagination span {
+            display: inline-block;
+            margin: 0 5px;
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #007bff;
+            border: 1px solid #ddd;
+            transition: background-color 0.3s;
+        }
+        .pagination a:hover {
+            background-color: #f0f0f0;
+        }
+        .pagination .disabled {
+            color: #ccc;
+            border: none;
+        }
+        .pagination .disabled:hover {
+            background-color: transparent;
+        }
+        .pagination .arrow {
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="layout">
+    <form th:action="@{/board/boardList}" method="get" class="search-container">
+        <input type="text" name="searchKeyword" class="search-input">
+        <button class="search-button" type="submit">검색</button>
+    </form>
+    <a href="/board/write" class="add-button">게시글 등록</a>
+    <table>
+        <thead>
+        <tr>
+            <th>글 번호</th>
+            <th>제목</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board : ${list}">
+            <td th:text="${board.id}"></td>
+            <td>
+                <a th:text="${board.title}"
+                   th:href="@{/board/boardDetail(id=${board.id})}">
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="pagination">
+        <!-- 이전 그룹 버튼 -->
+        <a th:if="${nowPage > startGroupPage}"
+           th:href="@{/board/boardList(page=${previousGroupStartPage}, searchKeyword=${param.searchKeyword})}"
+           class="arrow">&laquo; 이전</a>
+
+        <!-- 페이지 번호 버튼 -->
+        <th:block th:each="page : ${#numbers.sequence(startGroupPage, endGroupPage)}">
+            <a th:if="${page != nowPage}"
+               th:href="@{/board/boardList(page=${page - 1}, searchKeyword=${param.searchKeyword})}"
+               th:text="${page}"></a>
+            <span th:if="${page == nowPage}"
+                  th:text="${page}"></span>
+        </th:block>
+
+        <!-- 다음 그룹 버튼 -->
+        <a th:if="${endGroupPage < totalPages}"
+           th:href="@{/board/boardList(page=${nextGroupStartPage}, searchKeyword=${param.searchKeyword})}"
+           class="arrow">다음 &raquo;</a>
+    </div>
+</div>
+</body>
+</html>

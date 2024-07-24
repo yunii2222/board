@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시물 작성폼</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .layoutWrap {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .layout {
+            width: 100%;
+        }
+
+        .layout input[type="text"],
+        .layout textarea {
+            width: 100%;
+            padding: 10px 0 10px 0;
+            text-indent: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .layout input[type="text"]:focus,
+        .layout textarea:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .layout textarea {
+            resize: none;
+            height: 150px;
+        }
+
+        .layout button,
+        .layout .file-input-wrapper {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .layout button {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .layout button:hover {
+            background-color: #0056b3;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            font-size: 16px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-input-wrapper label {
+            display: block;
+            padding: 10px;
+            background-color: #fd8a3b;
+            color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .file-input-wrapper label:hover {
+            background-color: #d97531;
+        }
+
+        .back-button {
+            display: block;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #6c757d;
+            color: #fff;
+            text-align: center;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+<div class="layoutWrap">
+    <!-- enctype="multipart/form-data" => 파일업로드할때 추가 -->
+    <form action="/board/writedo" method="post" enctype="multipart/form-data">
+        <div class="layout">
+            <input name="title" type="text" placeholder="제목을 입력하세요">
+            <textarea name="content" placeholder="내용을 입력하세요"></textarea>
+
+            <!-- 파일 입력을 위한 커스텀 디자인 -->
+            <div class="file-input-wrapper">
+                <input type="file" name="multipartFile" id="fileUpload">
+                <label for="fileUpload">파일 선택</label>
+            </div>
+            <button type="submit">작성</button>
+            <a class="back-button" href="/board/boardList">목록으로</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
